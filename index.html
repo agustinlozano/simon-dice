@@ -6,47 +6,34 @@
     <title>Simon Dice</title>
     <meta name="viewport"
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital@1&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="/src/css/index.css">
 </head>
 
 <body>
     <div class="container">
-        </div>
-        <div class="row" id="top-bar">
-            <div class="col-sm-8">
-                <div class="alert alert-primary" role="alert" id="estado"></div>
+        <div class="row h-100 align-items-center justify-content-center">
+            <div class="col-lg-3 mx-2" id="user-card">
+                <form id="form">
+                    <p>Ingresa un nickname</p>
+                    <label for="user-nick">
+                        <input class="rounded" type="text" name="nick" id="user-nick" placeholder="Ej: Voldemort"
+                            required>
+                    </label>
+                    <button type="button" id="submit">Submit</button>
+                </form>
             </div>
-            <div class="col-sm-2">
-                <p>Ronda # <strong id="ronda">0</strong></p>
-            </div>
-            <div class="col-sm-2">
-                <button type="button" class="btn btn-primary">Empezar</button>
-            </div>
+            <a class="botton d-flex col-lg-3 align-items-center justify-content-center" id="boton"
+                href="src/html/simon-says.html">
+                Play
+            </a>
         </div>
 
-        <div class="container" id="tablero">
-            <div class="row">
-                <div class="col-sm">
-                    <div id="cuadro-1" class="cuadro">A</div>
-                </div>
-                <div class="col-sm">
-                    <div id="cuadro-2" class="cuadro">B</div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm">
-                    <div id="cuadro-3" class="cuadro">C</div>
-                </div>
-                <div class="col-sm">
-                    <div id="cuadro-4" class="cuadro">D</div>
-                </div>
-            </div>
-        </div>
+        <script type="module" src="/src/js/index.js"></script>
     </div>
-    <script type="text/javascript" src="js/main.js"></script>
-    <!--
-    <script type="text/javascript" src="js/pruebasBoludas.js"></script>
-        -->
 </body>
+
 </html>

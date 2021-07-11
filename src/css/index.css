@@ -1,0 +1,66 @@
+:root {
+    --bg: #EEEBD0;
+    --primary: #EBB3A9;
+    --secondary: #E86252;
+}
+
+body {
+    background-color: var(--bg);
+    font-family: 'Roboto Mono', monospace;
+}
+
+.container {
+    height: 700px;
+
+}
+
+/* User card*/
+#user-card {
+    background-color: var(--secondary);
+    border-top-left-radius: 10px;
+
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--bg);
+    height: 280px;
+}
+
+form input {
+    border: none;
+    padding: 8px;
+}
+
+#submit {
+    background-color: var(--primary);
+    color: var(--secondary);
+    border: solid;
+    border-radius: 5px;
+}
+
+
+/* Play botton */
+.botton {
+    height: 280px;
+    background-color: var(--primary);
+    border-end-end-radius: 10px;
+}
+
+a, p {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+a {
+    color: var(--secondary);
+    box-shadow: rgba(61, 60, 60, 0.2) 1px 4px 7px 0px;
+}
+
+a:hover {
+    text-decoration: none;
+    color:#EEEBD0;
+}
