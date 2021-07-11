@@ -1,3 +1,8 @@
+
+#tablero {
+    position: relative;
+}
+
 .cuadro {
     height: 200px;
     opacity: 0.5;

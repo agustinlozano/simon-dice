@@ -1,116 +1,122 @@
-let secuenciaMaquina = [];
 let secuenciaUsuario = [];
+let secuenciaMaquina = [];
 let ronda = 0;
+const user = 'GuyFromMordor'; //document.querySelector('#user');
 
-document.querySelector('button[type=button]').onclick = comenzarJuego;
-
-actualizarEstado('Toca "Empezar" para jugar');
-actualizarNumeroRonda('-');
-bloquearInputUsuario();
-
-
-function comenzarJuego() {
-    reiniciarEstado();
-    manejarRonda();
+document.querySelector('.btn').onclick = function(event) {
+    event.preventDefault();
+    comenzarPartida();
 }
 
-function reiniciarEstado() {
-    secuenciaMaquina = [];
-    secuenciaUsuario = [];
-    ronda = 0;
+comenzarPartida = () => {
+    reiniciarSecuencias();
+    gestionarPartida();
 }
 
-function manejarRonda() {
-    actualizarEstado('Turno de la maquina');
-    bloquearInputUsuario();
 
-    const $nuevoCuadro = obtenerCuadroAleatorio();
-    secuenciaMaquina.push($nuevoCuadro);
+
+// Definicion de funcioes
+gestionarPartida = () => {
+    actualizarEstado('maquina');
+    bloquearTablero();
+
+    const $cuadroMaquina = generarCuadroAleatorio();
+    secuenciaMaquina.push($cuadroMaquina);
 
     const RETRASO_TURNO_JUGADOR = (secuenciaMaquina.length + 1) * 1000;
 
-    secuenciaMaquina.forEach(function($cuadro, index){
+    secuenciaMaquina.forEach(function($cuadroMaquina, index){
         const RETRASO_MS = (index + 1) * 1000;
-        setTimeout(function(){
-            resaltar($cuadro);
+        setTimeout(() => {
+            resaltar($cuadroMaquina);
         }, RETRASO_MS);
     });
 
-    setTimeout(function() {
-        actualizarEstado('Turno del jugador');
-        desbloquearInputUsuario();
-    }, RETRASO_TURNO_JUGADOR);
-
+    setTimeout(() => {
+        actualizarEstado(user);
+        desbloquearTablero();
+    }, RETRASO_TURNO_JUGADOR);   
+    
     secuenciaUsuario = [];
     ronda++;
-    actualizarNumeroRonda(ronda);
+    actualizarRonda(ronda);
 }
 
 
+manejarInputUser = (event) => {
+    const $cuadroUser = event.target;
+    resaltar($cuadroUser);
+    secuenciaUsuario.push($cuadroUser);
 
-// otras declaraciones de funciones
-
-function manejarInputUsuario(event) {
-    const $cuadro = event.target;
-    resaltar($cuadro);
-    secuenciaUsuario.push($cuadro);
-
-    const $cuadroMaquina = secuenciaMaquina[secuenciaUsuario.length - 1];
-    if ($cuadro.id !== $cuadroMaquina.id) {
-        perder();
-        return;
+    // Realizar la comprobacion
+    for(let i = 0; i<secuenciaUsuario.length; i++) {
+        if(secuenciaUsuario[i] != secuenciaMaquina[i]){
+            gameOver();
+            return;
+        }
     }
 
     if (secuenciaUsuario.length === secuenciaMaquina.length) {
-        bloquearInputUsuario();
-        setTimeout(manejarRonda, 1000); 
+        bloquearTablero();
+        setTimeout(gestionarPartida(), 1000); 
     }
 }
 
-function obtenerCuadroAleatorio() {
+
+
+
+// Funciones auxiliares
+bloquearTablero = () => {
+    document.querySelectorAll('.cuadro').forEach(function($cuadro) {
+        $cuadro.onclick = function() {
+        };
+    });
+    /* $cuadro.onclick = function() {}; 
+       Igualar los cada cuadro a una funcion vacia inhabilita el cuadro   
+    */
+}
+
+reiniciarSecuencias = () => {
+    secuenciaMaquina = [];
+    secuenciaMaquina = [];
+    ronda = [];
+}
+desbloquearTablero = () => {
+    document.querySelectorAll('.cuadro').forEach(function($cuadro) {
+        $cuadro.onclick = manejarInputUser; // Ver sobre esta linea.
+    });
+}
+generarCuadroAleatorio = () => {
     const $cuadros = document.querySelectorAll('.cuadro');
     const indice = Math.floor(Math.random() * $cuadros.length);
+        /* (Math.random) genera un numero 0.579..., 
+           (Math.random * 4) genera un numero 1.858..., 2.584...
+           (Math.floor(Math.random()*4)) genera un numero entre 0 y 3.
+        */
     return $cuadros[indice];
 }
-
-function actualizarNumeroRonda(ronda) {
-    document.querySelector('#ronda').textContent = ronda; 
-}
-
-function actualizarEstado(estado, error = false) {
-    const $estado = document.querySelector('#estado');
-    $estado.textContent = estado;
-    if (error) {
-        $estado.classList.remove('alert-primary');
-        $estado.classList.add('alert-danger');
-    }else {
-        $estado.classList.remove('alert-danger');
-        $estado.classList.add('alert-primary');
-    }
-}
-
-function resaltar($cuadro) {
+resaltar = ($cuadro) => {
     $cuadro.style.opacity = 1;
     setTimeout(function() {
         $cuadro.style.opacity = 0.5;
     }, 500);
 }
-
-function bloquearInputUsuario() {
-    document.querySelectorAll('.cuadro').forEach(function($cuadro) {
-        $cuadro.onclick = function() {
-        };
-    });
+actualizarEstado = (jugadorActual) => {
+    const estado = document.querySelector('#estado');
+    
+    if(jugadorActual != 'maquina') {
+        estado.innerHTML = `${jugadorActual}, es tu turno!`;    
+    } else {
+        estado.innerHTML = `Ahora le toca a tu rival, la invensible ${jugadorActual}`;
+    } 
 }
+actualizarRonda = (ronda) => {
+    const $ronda = document.querySelector('#ronda');
+    $ronda.innerHTML = `${ronda}`;
+} 
+gameOver = () => {
+    bloquearTablero();
 
-function desbloquearInputUsuario() {
-    document.querySelectorAll('.cuadro').forEach(function($cuadro) {
-        $cuadro.onclick = manejarInputUsuario;
-    });
-}
-
-function perder() {
-    bloquearInputUsuario();
-    reiniciarEstado();
-    actualizarEstado('Perdiste! Tocá "Play" para jugar de nuevo', true);
+    const estado = document.querySelector('#estado');
+    estado.innerHTML = 'Perdiste, Lord Pekers has won again! You\'re loser.';
 }
